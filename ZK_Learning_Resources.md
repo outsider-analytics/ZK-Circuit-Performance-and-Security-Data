@@ -148,6 +148,9 @@
     *  zkpe 210: The Road to STARKs and Miden with Bobbin Threadbare
 *  Polygon Zero
     *  zkpe 220: The Road to Plonky2 with Brendan and Daniel
+ *  ZoKrates
+    * Stefan Demi's [Efficient ECC in zkSNARKs using ZoKrates](https://medium.com/zokrates/efficient-ecc-in-zksnarks-using-zokrates-bd9ae37b8186)
+        * Good explanation for why BN128 curve is used
 
 
 
