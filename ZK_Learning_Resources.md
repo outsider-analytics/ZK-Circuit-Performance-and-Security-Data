@@ -191,6 +191,8 @@
     * https://eprint.iacr.org/2016/492.pdf
 * Fully Homomorphic Encryption
     * zkpe 124: Exploring FHE with Flavio Bergamaschi from IBM Research
+ * baby jubjub (eliptic curves)
+   * Zcash: https://z.cash/technology/jubjub/
 
 ### :book: History
 * zkpe 90: Nigel Smart explains MPC & general history advances from the Cryptography vs. Cryptocurrancy side
