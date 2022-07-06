@@ -16,6 +16,7 @@
 * Tolks' Substack ZK Landscape: https://page1.substack.com/p/the-zero-knowledge-landscape?s=r
 * Matter Labs' "Awesome" list: https://github.com/matter-labs/awesome-zero-knowledge-proofs#readme
 * AtHeartEngineer's zkTech reddit with little overlap from other sources: https://www.reddit.com/r/zkTech/
+* Domenicop's notion page, don't miss the ZK Research Link! https://humorous-kick-fcd.notion.site/ZK-cryptography-e3e36f6130d5470cbae3be7003763476 
 
 
 ### :100: ZK Overviews:   
