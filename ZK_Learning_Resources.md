@@ -16,10 +16,12 @@
 * Tolks' Substack ZK Landscape: https://page1.substack.com/p/the-zero-knowledge-landscape?s=r
 * Matter Labs' "Awesome" list: https://github.com/matter-labs/awesome-zero-knowledge-proofs#readme
 * AtHeartEngineer's zkTech reddit with little overlap from other sources: https://www.reddit.com/r/zkTech/
-* Domenico's notion page, don't miss the ZK Research Link! https://humorous-kick-fcd.notion.site/ZK-cryptography-e3e36f6130d5470cbae3be7003763476 
+* Domenico's notion page, don't miss the ZK Research section! https://humorous-kick-fcd.notion.site/ZK-cryptography-e3e36f6130d5470cbae3be7003763476 
 
 
 ### :100: ZK Overviews:   
+* https://www.youtube.com/watch?v=BT88s7_VtC8&t=4s
+   * Intro to ZKs from Elena Nadolinski from Ironfish 
 * https://docs.circom.io/background/background
     * An intro to ZK Snark implementation from Circom (who powers protocols like Tornado Cash)
     * Circom is a language which allows for the construction of ZK circuits for use in Ethereum (the witness compiles to Solidity)
