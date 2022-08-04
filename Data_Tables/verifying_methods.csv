@@ -1,0 +1,9 @@
+Method,Identity,Tx or Trace
+0x695ef6f9,Groth16,Trace
+0xac318c5d,Plonk/Turbo_Plonk,Trace
+0x9b3b76cc,StarkWare,Tx
+0x4be6b36a,Groth16 (Loop Ring),Tx
+0xa830bd60,Plonk (ZK Sync),Trace
+0x7756aa8a,Plonk (ZK Swap),Trace
+0x83b1f6a0,Hermez,Trace
+0x1e8e1e13,Plonk (circom) ,Trace
