@@ -9,7 +9,7 @@ What data to collect for zk proving systems is a nuanced question.  While proofs
 The issue with gathering data on circuits directly is that they are not posted on-chain, and they are often not public.  Since this project is aimed at the use of zk tech on Ethereum, these verification contracts are a good unique value with which to describe the circuits behind them.
 To take categorization to the next level, circuits will be identified with the project behind them whenever possible, as oftentimes the deployed contracts will be upgraded to a new verifier (which is usually a hard change between which verifier is used.
 ### How we collected the data
-**Tools Used:**  While there are several excellent free sources for on-chain data such as dune analytics, they were not powerful enough to use as a starting point.  Therefore, Google Big Query's public crypto_ethereum db was used as the main source of data.  This database includes 3 tables that were used to sql query through on chain ethereum data: Transactions, Traces, and Contracts.  
+**Tools Used:**  While there are several excellent free sources for on-chain data such as dune analytics, they were not powerful enough to use as a starting point.  Therefore, Google Big Query's public crypto_ethereum db was used as the main source of data.  This database includes 3 tables that were used to sql query through on chain ethereum data: Transactions, Traces, and Contracts.
 **Searching with FF Constants:** The first way we searched through the data was to check the bytecode of deployed contracts for the finite field constant "21888242871839275222246405745257275088548364400416034343698204186575808495617" from the BN128 alternate curve native to Ethereum. In bytecode, constants are converted to Hex, which allows simple SQL queries to find inclusion. This drummed up about 600 contracts which included the contract; a very good start.  From there, we checked etherscan to see if the contracts were public and what they were. This was a good jumping off point, but it included a bunch of contracts that were either flow through, or not involved in actually using zk proofs.
 **Searching with Method IDs:** After observing the flows of traces and transactions, a pattern emerged for the flow of zk proof verifications on chain. This flow is detailed below in "verifiers", but the best way to capture which contracts are actually verifying proofs is through the method ids of the function calls. Method ids are created by taking the first 8 digits of the keccak256 hash of the function being called. (see this great project www.4byte.directory). We then created a table of method ids and corresponding function calls which were used to verify zk proofs.
 **Transactions and Traces:** Through observation, it became clear that verification contracts were often not called directly by the transaction, but were instead being captured as traces.  A trace is created for every smart contract function called after the transaction call (which is included in the transaction data). With this in mind we used a simple method id search through traces and transactions to get a table of all proof verifications on chain using those methods.
@@ -33,8 +33,23 @@ To take categorization to the next level, circuits will be identified with the p
 4. Circuit Development Language (i.e. RUST)
 5. Circuit Library (i.e. Libsnark)
 6. Hash Types Used
-
-
+One issue when collecting this info is projecting backwards.  Different projects replaced thier verifiers over time with new tech, but its hard to go back and see what was being used to generate proofs.  For instance, rescue hashes have been more prevalent recently and we are not sure when they began being utilized by projects.  Therefore we decided to take the current tools used and project them backwards unless there is a specific reason not to.
 
 ## **A Note On Verifiers**
 The verification flow on-chain depends greatly on the type of proving system which is employed by the project.  For Groth16 and standard Plonk, the verification is usually a simple function call to a single verifier contract with the proof as an input.  The verifying contract returns 0x000...001 (indicating a valid proof) and the contract can proceed.  For Turbo PLONK and STARK based contracts, the verification flow can get much more complicated and include many contracts.  They often include calls out of the verifying contract for items like vk keys and Pedersen hash points. For these more complicated verification systems, we grouped all of the contracts together as one verification system.
+
+## **Active Projects**
+After looking at the different verifiers first and last verification it became clear that many contracts were being replaced in use for different projects.  We looked at these contracts and decided to put a project tab, which ties the most recent verifier to its project.  This is necessisary as many users are interested in currently active projects and thier active verifier on chain.
+
+
+
+
+
+
+
+
+
+
+
+
+
