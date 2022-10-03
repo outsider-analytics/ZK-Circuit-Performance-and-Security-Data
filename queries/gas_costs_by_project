@@ -1,0 +1,299 @@
+-- This query is to pull the gas costs per active project.  They pull the txs from 9/20/22-9/26/22 which are sent to the public address of the active project.
+-- There is a "CASE WHEN" used to name the function call whenever useful. :)
+
+WITH txs AS (
+  SELECT 
+    "Element Finance" as project,
+    block_number,
+    "claimAirdropAndDelegate" as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND to_address = '0x72d3acdad21df959db2c112a0a5982d03759a154'
+  Union ALL
+  SELECT 
+    "zkSync V1",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x83981808' THEN "proveBlocks"
+    WHEN LEFT(input,10) = '0x45269298' THEN "commitBlocks"
+    WHEN LEFT(input,10) = '0xb0705b42' THEN "executeBlocks" 
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x01c3a1a6890a146ac187a019f9863b3ab2bff91e'
+  Union ALL
+  SELECT 
+    "Aztec Connect",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0xf81cccbe'THEN "processRollup"
+    WHEN LEFT(input,10) = '0x20825443' THEN "offchainData" 
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0xa173bddf4953c1e8be2ca0695cfc07502ff3b1e7'
+  Union ALL
+  SELECT 
+    "dYdX",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x9b3b76cc' THEN "verifyProofAndRegister" 
+    WHEN LEFT(input,10) = '0x5578ceae' THEN "registerContinuousMemoryPage" 
+    WHEN LEFT(input,10) = '0xe85a6a28' THEN "verifyFRI" 
+    WHEN LEFT(input,10) = '0x3fe317a6' THEN "verifyMerkle"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x8129b737912e17212c8693b781928f5d0303390a'
+  Union ALL
+  SELECT 
+    "ZKSpace",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x6898e6fc'THEN "verifyBlocks"
+    WHEN LEFT(input,10) = '0x4e913cd9' THEN "commitBlock"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x5bd9404260d2b0d55081e599e4e085be080141e2'
+  UNION ALL
+  SELECT 
+    "Aztec",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x06011a46'THEN "processRollup"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0xfcf75295f242c4e87203abb5d7c9bbeda90a8895'
+  UNION ALL
+  SELECT 
+    "Loopring",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0xdcb2aa31'THEN "submitBlocksWithCallbacks"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x7961076f6130092c1c90bd0d2c6f7f54055fa6c7'
+  Union ALL
+  -- Last ZKSwap for V1 occured in June 2022
+  SELECT 
+    "ZKSwap v1",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x3b3cf7b8'THEN "verifyBlocks"
+    WHEN LEFT(input,10) = '0x4e913cd9' THEN "commitBlock"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x042147bd43d3f59b3133ee08322b67e4e9f2fdb3'
+  UNION ALL
+  -- Last ZKSwap for V2 occured on Sept. 8th 2022
+  SELECT 
+    "ZKSwap v2",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x3b3cf7b8'THEN "verifyBlocks"
+    WHEN LEFT(input,10) = '0x4e913cd9' THEN "commitBlock"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x38101ae98196c8bcf7df1835bf3983b384272ae4'
+  UNION ALL
+  -- Note Polygon Hermez may have paused thier blockchain on 9/15/22 which was merge day...
+  SELECT 
+    "Polygon Hermez",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x6e7e1365'THEN "forgeBatch"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0xc3867da55e14b722ab2a8e9fa4e39f51f5e03de5'
+  UNION ALL
+  SELECT 
+    "WanChain",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x0f856267'THEN "smgRelease"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x8faee769b0b2c4072ef11029b1aedd5650145b9d'
+  AND LEFT(input,10) = '0x0f856267'
+-- UNION ALL
+-- -- Note these withdrawals are not regular
+-- SELECT 
+--   "Polygon Hermez Withdraw",
+--   block_number,
+--   CASE WHEN LEFT(input,10) = '0x9ce2ad42'THEN "withdrawCircuit"
+--   ELSE "unknown" END as Type,
+--   receipt_gas_used as Gas,
+--   t.hash as tx_hash
+-- FROM `bigquery-public-data.crypto_ethereum.transactions` t
+-- WHERE DATE(block_timestamp) = "2022-09-22" 
+-- -- AND DATE(block_timestamp) < "2022-9-27"
+-- AND from_address = '0xc39a66d503fe0e9955521a3acf6a7dd67cc5906a'
+-- AND LEFT(input,10) = '0x9ce2ad42'
+  UNION ALL
+  SELECT 
+    "Starknet" as project,
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x77552641'THEN "updateState"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7'  
+  UNION ALL
+  SELECT 
+    "IMX",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x504f7f6f' THEN "verifyAvailabilityProof"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7'
+  UNION ALL
+    SELECT 
+    "RinoFi",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x504f7f6f' THEN "verifyAvailabilityProof"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x8a6c80aab6497e2db35817817b593b79d78f6ae5'
+  UNION ALL
+    SELECT 
+    "Sorare",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x504f7f6f' THEN "verifyAvailabilityProof"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x63881ac44293e22f3c3183a0c4113586abb3e653'
+  UNION ALL
+  SELECT 
+    "Celer",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x504f7f6f' THEN "verifyAvailabilityProof"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x85A732d8e21f1890BdeA4eDddCf4Dd0E70a31EA5'
+  UNION ALL
+    SELECT 
+    "Myria",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x504f7f6f' THEN "verifyAvailabilityProof"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0xe997ece81cb8A686206ea6042886B594Ecf6DdED'
+  UNION ALL
+  SELECT 
+    "Davion",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x504f7f6f' THEN "verifyAvailabilityProof"
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19" 
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x78e802d42Bbc1834f962A11B54e0F8e07f52d4Fb'
+  UNION ALL
+  SELECT 
+    "Starkware",
+    block_number,
+    CASE WHEN LEFT(input,10) = '0x538f9406'THEN "updateState"
+    WHEN LEFT(input,10) = '0x9b3b76cc' THEN "verifyProofAndRegister" 
+    WHEN LEFT(input,10) = '0x5578ceae' THEN "registerContinuousMemoryPage" 
+    WHEN LEFT(input,10) = '0xe85a6a28' THEN "verifyFRI" 
+    WHEN LEFT(input,10) = '0x3fe317a6' THEN "verifyMerkle" 
+    ELSE "unknown" END as Type,
+    receipt_gas_used as Gas,
+    t.hash as tx_hash,
+    COUNT(*) OVER (PARTITION BY LEFT(input,10)) AS num_txs
+  FROM `bigquery-public-data.crypto_ethereum.transactions` t
+  WHERE DATE(block_timestamp) > "2022-09-19"
+  AND DATE(block_timestamp) < "2022-9-27"
+  AND from_address = '0x99ade43be1c386423ea4ab53e69efcd98e211fda'
+)
+
+
+SELECT 
+  t.project,
+  type,
+  sum(gas) as gas,
+  AVG(num_txs) as num_txs,
+  sum(gas)/Avg(num_txs) as avg_gas_per_tx
+FROM txs t
+GROUP BY t.project, type
+ORDER BY project, gas
