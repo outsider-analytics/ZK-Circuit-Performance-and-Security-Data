@@ -1,0 +1,19 @@
+Project,Latest Deployed Verifier,Proving System,First txn,Last Txn,Number of Verifications,Avg gas Per Verification,Libraries,Language,Hashes Used,Purpose,L2?,Rollup or Validium,Trusted Setup?,# of participants
+Element Finance,0xd0abdb2175ef925a3f3780b5489f319db7dae42c,PLONK,2022-04-12 02:31:56 UTC,2022-09-20 00:53:47 UTC,507,258689,"circom, snarkjs",circom,Pedersen,Private Airdrop,No,,"Yes, Hermez ./build/pot16_final.ptau",54
+zkSync V1,0xf7bd436a05678b647d74a88ffcf4445efc43bdfc,PLONK,2021-12-17 06:21:35 UTC,2022-10-02 15:46:35 UTC,7899,470407,"bellman, franklin-crypto",RUST,"Rescue, Sha256",Token Transfer,Yes,Rollup,"Yes, Aztec PLONK Universal ",176
+Aztec Connect,0x07528c46a34d16e4fb7cfa9db7333c521bec8ea2,PLONK,2022-06-08 18:41:50 UTC,2022-10-02 13:10:59 UTC,2654,270461,barretenberg,C++,"Blake2, Pedersen",Private Defi,Yes,Rollup,"Yes, Aztec PLONK Universal ",176
+StarkEx (DYDX),0xf6b83ccadeee478fc372af6ca7069b14fbc5e1b1,STARK/FRI,2021-02-21 21:35:10 UTC,2022-10-02 14:15:59 UTC,90928,268430,cairo,"C++, Cairo",Pedersen,Perpetual and Trading,Yes,Rollup,No,
+Messier 10 Ether,0x39e5b71535cc98fddcd8ba6083deaa5409e0d7d6,Groth16,2022-07-08 21:47:02 UTC,2022-09-15 02:42:33 UTC,20,219023,,,,Mixer,No,,Yes,
+Messier .1 Ether,0x04f94e0bf3b30b0ce53288fbdfcfcf393ee5fb90,Groth16,2022-06-30 21:23:19 UTC,2022-09-15 03:17:08 UTC,130,242996,,,,Mixer,No,,Yes,
+Messier 1 Ether,0x1a7578ce0a6225cce81406ba51c9168dfa99e912,Groth16,2022-06-30 20:32:47 UTC,2022-09-15 02:52:17 UTC,110,242993,,,,Mixer,No,,Yes,
+ZK Space,0x44deda2c824458a5dfe1e363c679dea33f1ffa39,PLONK,2022-04-20 08:25:15 UTC,2022-10-02 15:14:59 UTC,3057,480766,"bellman, franklin-crypto",RUST,Rescue,Bridge to L2?,Yes,Rollup,"Yes, Aztec PLONK Universal ",176
+Cosmic Kiss,0x5d795b94bc199567d0eae0ca4cf1ab4a19217f35,Groth16,2022-03-04 01:22:05 UTC,2022-03-05 00:55:51 UTC,8,244539,"circom, snarkjs",circom,,Mixer,No,,Yes,
+Aztec,0xd3a6d9de4cbc2cc7529361941e85b1c3269ccbb1,TurboPLONK,2021-12-12 19:50:49 UTC,2022-10-02 10:01:59 UTC,2380,631297,barretenberg,C++,"Blake2, Pedersen",Privacy,Yes,Rollup,"Yes, Aztec PLONK Universal ",176
+"StarkEx (IMX, Rinofi, Sorare,Starknet, Layer2.Finance, Myria)",0x932457426841dc45ca4abc7ebdafe60133474363,STARK/FRI,2022-08-02 01:19:04 UTC,2022-10-02 07:20:59 UTC,1038,257416,cairo,"C++, Cairo",Pedersen,App Specific Validium & General purpose L2,Yes,Both,No,
+Loopring,0x6150343e0f43a17519c0327c41edd9ebe88d01ef,Groth16,2020-11-24 01:57:51 UTC,2022-10-02 15:53:47 UTC,30035,420389,"ethsnarks, libsnark",C++,Poseidon,Orderbook,Yes,Rollup,"Yes, Perpetual Powers of Tau + step 2",16
+ZK Swap V1,0x165dfa76dfd3f6ad6ad614ae4566c2e9262e532f,PLONK,2021-02-12 16:48:47 UTC,2022-06-26 13:01:49 UTC,7822,544569,"bellman, franklin-crypto",RUST,"Rescue, Sha256",Token Transfer,Yes,Rollup,"Yes, Aztec PLONK Universal ",176
+ZK Swap V2,0x94b9401945a9bc06ce5b69e6db3c6b671aabc829,PLONK,2021-07-12 13:24:43 UTC,2022-09-28 08:39:35 UTC,7283,512626,"bellman, franklin-crypto",RUST,"Rescue, Sha256",Token Transfer,Yes,Rollup,"Yes, Aztec PLONK Universal ",176
+Polygon Hermez,0x1dc4b451dfcd0e848881ede8c7a99978f00b1342,Groth16,2021-05-13 08:20:21 UTC,2021-05-13 08:20:21 UTC,4932,202593,"circom, snarkjs",circom,Poseidon,Token Transfer,Yes,Rollup,"Yes, Perpetual Powers of Tau + step 2",6
+Polygon Hermez Withdrawal,0x4464a1e499cf5443541da6728871af1d5c4920ca,Groth16,2021-09-10 08:15:58 UTC,2022-09-22 18:05:35 UTC,266,202593,"circom, snarkjs",circom,Poseidon,Withdrawal for Hermez Token Transfer ,Yes,Rollup,"Yes, Perpetual Powers of Tau + step 2",6
+WanChain,0x84271540f80e8879826c377ebc496dfae270321a,,2020-11-02 06:46:24 UTC,2022-10-01 20:22:59 UTC,5829,16811,,,,,,,,
+Tornado.Cash,0xce172ce1f20ec0b3728c9965470eaf994a03557a,Groth16,2020-05-13 06:38:49 UTC,2022-10-02 15:45:59 UTC,302984,242621,"circom, snarkjs",circom,Pedersen,Mixer,No,,"Yes, Perpetual Powers of Tau + step 2",1114

@@ -1,0 +1,33 @@
+Function Call,Method ID,Contract,Verifier,Type
+"executeBlocks(((uint32,uint64,bytes32,uint256,bytes32,bytes32),bytes[])[])",0xb0705b42,zkSync,No,Tx
+"verifyAggregatedBlockProof(uint256[],uint256[],uint8[],uint256[],uint256[16]",0xa830bd60,zkSync,Yes,Trace
+getKeyById(uint256),0x5a880de3,Aztec,"No, but helps with turboPLONK",Trace
+"verify(bytes,uint256)",0xac318c5d,Aztec,Yes,Trace
+"verifyMultiblockProof(uint256[],uint256[],uint32[],uint256[],uint256[])",0x7756aa8a,zkSpace,Yes,Trace
+"proveG16(bytes32,uint256[2],uint256[2][2],uint256[2],uint256[])",0x83e93cd6,,Yes,Trace
+"verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[4])",0x5fe8c13b,Groth16 ZoKrates,Yes,Trace
+,0xb5596a88,Aztec,Yes,Trace
+,0x95b5d617,Depositor_zkSync,Yes,Trace
+"withdraw(uint256[2],uint256[2][2],uint256[2],uint256[4])",0x551c4fd2,Mixer,No,Trace
+"verifyProofAndRegister(uint256[],uint256[],uint256[],uint256[],uint256)",0x9b3b76cc,Starkware,No,Tx
+?,0x4be6b36a,Groth16(LoopRing),Yes,Tx
+?,0x22a6fef1,Mixer,Yes,Tx
+,0x01558ed9,CpuConstraintPoly,No,Trace
+"verifyProofExternal(uint256[],uint256[],uint256[])",0x1cb7dd79,Starkware Cpu Friless Verifier,No,Trace
+verifyProofs,0x104e4cda,Loopring Block Verifier,Yes,Trace
+"Null, need to deal with this ambigouity",0x00000000,JoinSplit (Aztec),Yes,Trace 
+?,0xcfb7b716,Zeropool (Groth16),Yes,Trace
+Is Block Size Supported,0xe54ee6b1,zkSync,No,Trace
+"verifyBlockProof(uint256[],bytes32,uint32)",0xdc46ea94,zkSync,Yes,Trace
+"verifyProof(bytes,uint256[7])",0x598da1d1,"Groth16, Circom",Yes,Trace
+"verifyProof(bytes,uint256[6])",0x695ef6f9,"Groth16, Circom",Yes,Trace
+"verify(bytes32,bytes32,bytes32,bytes32,bytes32,bytes32)",0x182f875c,WanChain,Yes,Trace
+"verifyProofs(uint8,bool,uint16,uint8,uint[],uint[])",0xdc77295b,Loopring Block Verifier,Yes,Trace
+"verifyProof(bytes,uint256[12])",0x72774f72,WithdrawVerifier,Yes,Trace
+"verifyProof(bytes,uint256[4])",0x6bf062b2,TreeUpdateVerifier,Yes,Trace
+"verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[1])",0x43753b4d,Hermez,Yes,Trace
+"verifyProof(bytes,uint256[1])",0x8d8f8a5c,BatchTreeUpdateVerifier,Yes,Trace
+"verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])",0x11479fea,MembershipVerifier,Yes,Trace
+"verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])",0xf5c9d69e,Verifier,Yes,Trace
+"verifyProof(bytes,uint256[])",0x1e8e1e13,PLONK Private Airdrop,Yes,Trace
+"verifyFRI(uint256[],uint256[],uint256,uint256,uint256)",0xe85a6a28,Starkware,Yes,Tx
