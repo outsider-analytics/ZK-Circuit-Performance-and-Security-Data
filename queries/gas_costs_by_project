@@ -1,3 +1,4 @@
+
 -- This query is to pull the gas costs per active project.  They pull the txs from 9/20/22-9/26/22 which are sent to the public address of the active project.
 -- There is a "CASE WHEN" used to name the function call whenever useful. :)
 
@@ -157,20 +158,6 @@ WITH txs AS (
   AND DATE(block_timestamp) < "2022-9-27"
   AND from_address = '0x8faee769b0b2c4072ef11029b1aedd5650145b9d'
   AND LEFT(input,10) = '0x0f856267'
--- UNION ALL
--- -- Note these withdrawals are not regular
--- SELECT 
---   "Polygon Hermez Withdraw",
---   block_number,
---   CASE WHEN LEFT(input,10) = '0x9ce2ad42'THEN "withdrawCircuit"
---   ELSE "unknown" END as Type,
---   receipt_gas_used as Gas,
---   t.hash as tx_hash
--- FROM `bigquery-public-data.crypto_ethereum.transactions` t
--- WHERE DATE(block_timestamp) = "2022-09-22" 
--- -- AND DATE(block_timestamp) < "2022-9-27"
--- AND from_address = '0xc39a66d503fe0e9955521a3acf6a7dd67cc5906a'
--- AND LEFT(input,10) = '0x9ce2ad42'
   UNION ALL
   SELECT 
     "Starknet" as project,
@@ -197,7 +184,7 @@ WITH txs AS (
   FROM `bigquery-public-data.crypto_ethereum.transactions` t
   WHERE DATE(block_timestamp) > "2022-09-19" 
   AND DATE(block_timestamp) < "2022-9-27"
-  AND from_address = '0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7'
+  AND from_address = '0x9b7f7d0d23d4cace5a3157752d0d4e4bf25e927e'
   UNION ALL
     SELECT 
     "RinoFi",
