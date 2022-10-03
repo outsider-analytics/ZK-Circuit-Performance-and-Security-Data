@@ -1,0 +1,195 @@
+
+-- The point of this query is to get a list of all verification by public verifiers on Ethereum Main Chain
+-- and group them by month from the first verification (2018-11-16 11:43:50 UTC) and prover system
+-- The top part is the same as Verifier Contracts and grabs all contracts using the Method IDs which 
+-- I believe are verifications.  
+
+WITH traces as (
+  SELECT 
+    *,
+    "Plonk_check" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xb6d5d214"
+  UNION ALL
+    SELECT 
+    *,
+    "PLONK(Hermez or zkSync/swap)" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xa830bd60"
+  UNION ALL
+  SELECT 
+    *,
+    "Plonk/Turbo_Plonk" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xac318c5d"
+  UNION ALL
+  SELECT 
+    *,
+    "PLONK_(zkSync/swap)" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x7756aa8a"
+  UNION ALL
+  SELECT 
+    *,
+    "Groth16 ZoKrates" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x83e93cd6"
+  UNION ALL
+  SELECT 
+    *,
+    "Groth16 ZoKrates" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x5fe8c13b"
+  UNION ALL
+  SELECT 
+    *,
+    "Aztec_Early" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xb5596a88"
+  UNION ALL
+  SELECT 
+    *,
+    "Depositor_zkSync" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x95b5d617"
+  UNION ALL
+  SELECT 
+    *,
+    "Loopring Block Verifier (Groth16)" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x104e4cda"
+  UNION ALL
+  SELECT 
+    *,
+    "ZeroPool (Groth16)" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xcfb7b716"
+  UNION ALL
+  SELECT 
+    *,
+    "zkSync (Plonk or Super Plonk)" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xdc46ea94"
+  UNION ALL
+  SELECT 
+    *,
+    "Groth 16 Circom" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x598da1d1"
+  UNION ALL
+    SELECT 
+    *,
+    "Groth 16 Circom" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x695ef6f9"
+  UNION ALL
+    SELECT 
+    *,
+    "WanChain" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x182f875c"
+  UNION ALL
+    SELECT 
+    *,
+    "Loopring Block Verifier" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xdc77295b"
+  UNION ALL
+  SELECT 
+    *,
+    "TreeUpdateVerifier" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x6bf062b2"
+  UNION ALL
+  SELECT 
+    *,
+    "Hermez" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x43753b4d"
+  UNION ALL
+    SELECT 
+    *,
+    "BatchTreeUpdateVerifier" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x8d8f8a5c"
+  UNION ALL
+  SELECT 
+    *,
+    "MembershipVerifier" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x11479fea"
+  UNION ALL
+  SELECT 
+    *,
+    "Verifier" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0xf5c9d69e"
+  UNION ALL
+  SELECT 
+    *,
+    "Plonk Private Airdrop" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x1e8e1e13"
+  UNION ALL
+  SELECT 
+    *,
+    "Groth16" as type
+  FROM `bigquery-public-data.crypto_ethereum.traces`
+  WHERE LEFT(input,10) = "0x695ef6f9"
+  
+
+),
+
+txs as (  
+  SELECT 
+    *,
+    "Groth16(LoopRing)" as type
+  FROM `bigquery-public-data.crypto_ethereum.transactions`
+  WHERE LEFT(input,10) = "0x4be6b36a"
+  UNION ALL
+  SELECT 
+    *,
+    "Mixer 0xfa8c5b87f6f7bddea8fe37d9827182d40d290eb0a94971686c89efa3b2fb4f6a" as type
+  FROM `bigquery-public-data.crypto_ethereum.transactions`
+  WHERE LEFT(input,10) = "0x22a6fef1"
+  -- Starkware is a nest of complexity, but I believe the actual verification of the FRIs is completed with the below method call
+  UNION ALL
+  SELECT 
+    *,
+    "StarkWare (STARK FRI)" as type
+  FROM `bigquery-public-data.crypto_ethereum.transactions`
+  WHERE LEFT(input,10) = "0xe85a6a28"
+),
+
+combine_tx_traces AS (
+  SELECT
+    to_address as verifier_contract,
+    block_timestamp
+  FROM traces t
+  UNION ALL
+  SELECT 
+    to_address,
+    block_timestamp
+  FROM txs
+),
+
+
+-- This connects the verifier's with the public verifiers found here: https://docs.google.com/spreadsheets/d/1Boo9zmsRDc1nDLUQIp8JyInPddF5F2aXM_1zkKGAG1g/edit#gid=1920635768
+-- It also finds the number of months between the first verification and the rows verification.
+only_public AS (
+  SELECT
+    count(t.verifier_contract) as num_verifications,
+    proving_system,
+    TIMESTAMP_DIFF(t.block_timestamp, '2018-11-16 11:43:50 UTC', MINUTE)/43830 as months,
+  FROM combine_tx_traces t
+  RIGHT JOIN `starlit-sandbox-349500.Data.public_verifier_contracts` c ON c.contract_address = t.verifier_contract
+  GROUP BY months, proving_system
+)
+
+-- This section takes a the sum of the verifications per month per proving system rounding down.
+SELECT 
+  sum(num_verifications) as verifications,
+  proving_system,
+  FLOOR(months) as months
+FROM only_public
+GROUP BY proving_system, months
