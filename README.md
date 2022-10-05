@@ -1,55 +1,45 @@
 # ZK-Circuit-Performance-and-Security-Data
-Goal: To collect data on the performance and security characteristics of ZK circuits being verified on the Ethereum Blockchain and expose this data to users in a usable way.
+### Goal: To collect data on the performance and security characteristics of ZK circuits being verified on the Ethereum Blockchain and expose this data to users in a usable way.
 
-## Background
-For all of the benefits of smart contract based blockchains, they fundamentally suffer from two major limitations: Scalability and Privacy.  The TPS of Ethereum is currently 6 TPS https://ethtps.info/, and an astute data scientist can utilize the public chain data to see all transactions within the network. As Ethereum works to cross the chasm to mainstream adoption, zero knowledge proofs have emerged as a potential solution for both issues. For scalability, zk proofs are able to shrink the size of the data on chain by batching transactions and only posting a proof of what state change occured (rollups) or the merkle root of the new state (validiums).  Since the proof of the transaction's validity is generated off chain and verified as correct via a smart contract, the size of the data is dramatically reduced.  On the privacy level, inputs to the zk proof can be kept secret while still guaranteeing that they are valid.  With the complexity of these proofs, it is important to understand what trade offs are being made for the different types, hense this project.  Please see https://ethereum.org/en/developers/docs/scaling/zk-rollups/ and https://ethereum.org/en/developers/docs/scaling/validium/ for really good explainations for scaling using zk proofs.
-## **Methodology**
-### What data to collect?
-What data to collect for zk proving systems is a nuanced question.  While proofs themselves are providing the functionality, the important characteristics of the proof come from the circuit used to generate it.  For instance, there have been over 400 calls to verify proofs for zkSync v1 (0xf7bd436a05678b647d74a88ffcf4445efc43bdfc), but these proofs come from the same off chain circuit.  
-The issue with gathering data on circuits directly is that they are not posted on-chain, and they are often not public.  Since this project is aimed at the use of zk tech on Ethereum, these verification contracts are a good unique value with which to describe the circuits behind them.
-To take categorization to the next level, circuits will be identified with the project behind them whenever possible, as oftentimes the deployed contracts will be upgraded to a new verifier (which is usually a hard change between which verifier is used.
-### How we collected the data
-**Tools Used:**  While there are several excellent free sources for on-chain data such as dune analytics, they were not powerful enough to use as a starting point.  Therefore, Google Big Query's public crypto_ethereum db was used as the main source of data.  This database includes 3 tables that were used to sql query through on chain ethereum data: Transactions, Traces, and Contracts.
-**Searching with FF Constants:** The first way we searched through the data was to check the bytecode of deployed contracts for the finite field constant "21888242871839275222246405745257275088548364400416034343698204186575808495617" from the BN128 alternate curve native to Ethereum. In bytecode, constants are converted to Hex, which allows simple SQL queries to find inclusion. This drummed up about 600 contracts which included the contract; a very good start.  From there, we checked etherscan to see if the contracts were public and what they were. This was a good jumping off point, but it included a bunch of contracts that were either flow through, or not involved in actually using zk proofs.
-**Searching with Method IDs:** After observing the flows of traces and transactions, a pattern emerged for the flow of zk proof verifications on chain. This flow is detailed below in "verifiers", but the best way to capture which contracts are actually verifying proofs is through the method ids of the function calls. Method ids are created by taking the first 8 digits of the keccak256 hash of the function being called. (see this great project www.4byte.directory). We then created a table of method ids and corresponding function calls which were used to verify zk proofs.
-**Transactions and Traces:** Through observation, it became clear that verification contracts were often not called directly by the transaction, but were instead being captured as traces.  A trace is created for every smart contract function called after the transaction call (which is included in the transaction data). With this in mind we used a simple method id search through traces and transactions to get a table of all proof verifications on chain using those methods.
-## The Data
-**Grouping the Data:** After the Method Id search, we then grouped the transaction by verification contract and pulled the following data from on chain:
-1. Verification Contract
-2. First Transaction Date
-3. Last Transaction Date
-4. Contract Deployed By Address
-5. Contract Creation Input
-6. Contract Runtime Bytecode
-7. Avg Gas Used for Verification
-8. Method ID
-9. Method Type (Trace or Transaction)
-10. Number of Contract Calls
+## The Project:
+This project is backed by a grant from the Ethereum Foundation Privacy Scaling Exploration.  The full details can be found here https://medium.com/@outsideranalytics/fantastic-zero-knowledge-proofs-ef4bb746f838.
 
-**Off Chain Data:** Unfortunately not all data points can be collected on-chain. Off-chain we go! The first step was to go through each contract on etherscan to see whether it was public and its code. Assuming the code was public, we then used etherscan to look at realted contracts to determine the project it was associated with. Digging into the contracts the documentation, and discord discussions from the different projects yielded a good confidence of knowing the following:
-1. Proving System
-2. Contract Author (different than owner in forks)
-3. Boolean if the Contract is Public
-4. Circuit Development Language (i.e. RUST)
-5. Circuit Library (i.e. Libsnark)
-6. Hash Types Used
-One issue when collecting this info is projecting backwards.  Different projects replaced thier verifiers over time with new tech, but its hard to go back and see what was being used to generate proofs.  For instance, rescue hashes have been more prevalent recently and we are not sure when they began being utilized by projects.  Therefore we decided to take the current tools used and project them backwards unless there is a specific reason not to.
+## Files: 
+1. ZK_Learning_Resources.md: A curated list of zk learning resources
+2. queries: SQL queries performed on google big query crypto_ethereum public database
+3. Data_Tables: Results of the queries and manual data entry completed
+4. Google Docs version of data tables https://docs.google.com/spreadsheets/d/1Boo9zmsRDc1nDLUQIp8JyInPddF5F2aXM_1zkKGAG1g/edit#gid=1946907765
 
-## **A Note On Verifiers**
-The verification flow on-chain depends greatly on the type of proving system which is employed by the project.  For Groth16 and standard Plonk, the verification is usually a simple function call to a single verifier contract with the proof as an input.  The verifying contract returns 0x000...001 (indicating a valid proof) and the contract can proceed.  For Turbo PLONK and STARK based contracts, the verification flow can get much more complicated and include many contracts.  They often include calls out of the verifying contract for items like vk keys and Pedersen hash points. For these more complicated verification systems, we grouped all of the contracts together as one verification system.
-
-## **Active Projects**
-After looking at the different verifiers first and last verification it became clear that many contracts were being replaced in use for different projects.  We looked at these contracts and decided to put a project tab, which ties the most recent verifier to its project.  This is necessisary as many users are interested in currently active projects and thier active verifier on chain.
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Some Research Notes:
+- Research Notes
+    - Aztec
+        - Primitives (including hashes): https://github.com/AztecProtocol/aztec-connect/blob/63e060f3235c57584aaf75375c835d92cdfa1d11/specs/aztec-connect/src/primitives.md
+        - Trusted Setup: https://medium.com/aztec-protocol/aztec-crs-the-biggest-mpc-setup-in-history-has-successfully-finished-74c6909cd0c4
+    - zkSync
+        - Primitives: https://github.com/matter-labs/zksync/blob/master/docs/protocol.md#rescue-hash
+        - Trusted Setup: https://docs.zksync.io/userdocs/security/#primitives
+    - Element Finance
+        - Primitives: https://github.com/element-fi/zkp-merkle-airdrop-contracts
+        - Trusted Setup: https://blog.hermez.io/hermez-cryptographic-setup/
+    - Starkex
+        - Primitives: https://docs.starkware.co/starkex/fact-registry.html
+        - On Chain Data: https://docs.starknet.io/docs/Data%20Availabilty/on-chain-data
+        - Contracts: https://docs.starkware.co/starkex/deployments-addresses.html
+    - Loopring
+        - primitives:
+            - https://github.com/Loopring/protocols/blob/5644b2386d0ce2310ce4d8fd1f060b1289a08ebd/packages/loopring_v3/circuit/statements.md
+            - https://github.com/Loopring/protocols/blob/81a403ba478f0476f4de2ac7cbfeac2297ad01ab/packages/loopring_v3/BACKEND.md
+        - Trusted Setup: https://github.com/Loopring/trusted_setup/blob/2b30037a3a98e51f7dc8cccd2fa363a7e2094fe7/README.md
+            - https://github.com/Loopring/trusted_setup/tree/master/attestations (participants)
+            - https://loopring.org/#/post/loopring-bi-weekly-update-12-01-2019
+        - Technical Details: https://medium.loopring.io/zksnark-prover-optimizations-3e9a3e5578c0
+    - Hermez
+        - https://polygon.technology/solutions/polygon-hermez/
+        - Primitives https://docs.hermez.io/Hermez_1.0/about/security/#multi-party-computation-for-the-trusted-setup
+        - Trusted Setup
+            - Withdraw circuit: https://github.com/hermeznetwork/phase2ceremony_4
+    - Perpetual Powers of Tau
+        - https://github.com/weijiekoh/perpetualpowersoftau
+        - 71 participants for the phase 1 :)
+    - Tornado Cash
+        - Trusted Setup: https://tornado-cash.medium.com/the-biggest-trusted-setup-ceremony-in-the-world-3c6ab9c8fffa
