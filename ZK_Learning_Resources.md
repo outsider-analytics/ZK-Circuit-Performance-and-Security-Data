@@ -206,20 +206,5 @@
 * 2007 major advance from Paul Valiant [Incrementally Verifiable Computation](https://dspace.mit.edu/bitstream/handle/1721.1/38663/163581090-MIT.pdf?sequence=2)
 
 ---
-### :memo: Can I contribute to/correct this page? YES! It is open editable by signed in users. Just put yourself in the credit table below :slightly_smiling_face: 
-
-
-| Name (ANON) | Social Handles | Section Edited | Date
-| -------- | -------- | -------- | ------ |
-|Brian Wilkes| OutsiderAnalytics|The Whole Thing| 6/14/22|
-|  |  |  |  |
-
-If you would like to give me non-public feedback: Outsideranalytics@gmail.com
-
----
-### :heart: If you appreciate this list and want to see it maintained!
-1. Thank the Ethereum Foundation PSE team who made it possible
-2. Give to Ethereum Public Works Projects on https://gitcoin.co/ (especially ZK projects)
----
 ### Disclaimer: 
 This work is being funded by the Ethereum Foundation PSE team, and my crypto holdings are limited to Eth and ERC-20/721 tokens in the Ethereum/Polygon ecosystems. While this is due to my belief in the future viability/tokenomics of Ethereum, please note my inherent biases. I recognize and am truly grateful for the advances in ZK tech not associated with Ethereum, and will always strive towards the goal of impartiality!
